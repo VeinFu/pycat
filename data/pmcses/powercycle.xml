@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="pmcses" schema="pmcses.xsd">
+  <loop-process loop="10" quit="fail">
+    <!--item type="ses-command">
+      <desc>OUTP OFF</desc>
+      <block>PT1M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp off"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>OUTP ON</desc>
+      <block>PT1M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp on"/>
+      </ses-command>
+    </item-->
+
+    <!--item type="ses-command-comparefirstvalue">
+      <desc>PHY CHECK</desc>
+      <ses-command-comparefirstvalue proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="status sas_phy" timeout="1" recv="4096"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!-error-filter type="key-word" operation="find" value="error"/->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-comparefirstvalue>
+    </item-->
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="$%^0"/>
+      </ses-command>
+    </item>
+
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>ABOUT</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="about"/>
+      </ses-command>
+    </item>
+
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="010002"/>
+        <version name="DAT0" ver="010002"/>
+        <version name="DAT1" ver="010002"/>
+        <version name="IMG0" ver="010002"/>
+        <version name="IMG1" ver="010002" misc="Running"/>
+        <version name="BCFG" ver="010002" misc="AIF=IMG1/DATA1"/>
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="status sas_phy" timeout="1" recv="4096"/>
+        <phy_map>
+          <phy name="12G" phy_id="6-39"/>
+          <phy name="6G" phy_id=""/>
+          <phy name="3G" phy_id=""/>
+          <phy name="1.5G" phy_id=""/>
+        </phy_map>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!--error-filter type="key-word" operation="find" value="error"/-->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_phy>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="$%^2"/>
+      </ses-command>
+    </item>
+
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>ABOUT</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="about"/>
+      </ses-command>
+    </item>
+
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="010002"/>
+        <version name="DAT0" ver="010002"/>
+        <version name="DAT1" ver="010002"/>
+        <version name="IMG0" ver="010002"/>
+        <version name="IMG1" ver="010002" misc="Running"/>
+        <version name="BCFG" ver="010002" misc="AIF=IMG1/DATA1"/>
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="status sas_phy" timeout="1" recv="4096"/>
+        <phy_map>
+          <phy name="12G" phy_id="6-39"/>
+          <phy name="6G" phy_id=""/>
+          <phy name="3G" phy_id=""/>
+          <phy name="1.5G" phy_id=""/>
+        </phy_map>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!--error-filter type="key-word" operation="find" value="error"/-->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_phy>
+    </item>
+  </loop-process>
+</testcase>

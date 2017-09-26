@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <loop-process loop="10" quit="fail">
+    <!--item type="command">
+      <desc>POWER ON</desc>
+      <block>PT3M</block>
+      <command cmd="OUTP" proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="9600" timeout="1" recv="0"/>
+        <option name="action" args="ON"/>
+      </command>
+    </item-->
+    <item type="device-sensor">
+      <desc>Check VCCINT SENSOR</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="vol_test -n VCCINT"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="970" maxvalue="1030"/>
+      </device-sensor>
+    </item>
+    <item type="device-sensor">
+      <desc>Check VCCAUX SENSOR</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="vol_test -n VCCAUX"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="1770" maxvalue="1830"/>
+      </device-sensor>
+    </item>
+    <item type="device-sensor">
+      <desc>Check VCCBRAM SENSOR</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="vol_test -n VCCBRAM"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="970" maxvalue="1030"/>
+      </device-sensor>
+    </item>
+    <item type="device-sensor">
+      <desc>Check INTTEMP SENSOR</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="int_temp_test -h 200"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="0" maxvalue="100"/>
+      </device-sensor>
+    </item>
+    <item type="device-sensor">
+      <desc>Check EXTTEMP SENSOR</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="ext_temp_test -h 200"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="0" maxvalue="100"/>
+      </device-sensor>
+    </item>
+
+    <item type="device-sensor">
+      <desc>Check FW VERSION</desc>
+      <device-sensor proxy="ssh">
+        <cmd value="fwver_test"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <condition minvalue="" maxvalue="0.1"/>
+      </device-sensor>
+    </item>
+    <item type="device-pcie">
+      <desc>Check PCIE</desc>
+      <device-pcie proxy="ssh">
+        <cmd value="lspci -s 01:0.0 -xvvv"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <speedwide speedvalue="5GT/s" widevalue="x8"/>
+      </device-pcie>
+    </item>
+    <item type="device-memory">
+      <desc>Check MENORY</desc>
+      <device-memory proxy="ssh">
+        <cmd value="Checkddrsize"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+      </device-memory>
+    </item>
+    <item type="command">
+      <desc>REBOOT SYSTEM</desc>
+      <block>PT2M</block>
+      <command cmd="reboot" proxy="ssh">
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+      </command>
+    </item>
+    <!--item type="command">
+      <desc>POWER OFF</desc>
+      <block>PT20S</block>
+      <command cmd="OUTP" proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="9600" timeout="1" recv="0"/>
+        <option name="action" args="OFF"/>
+      </command>
+    </item-->
+  </loop-process>
+</testcase>
+

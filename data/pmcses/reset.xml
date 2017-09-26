@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="pmcses" schema="pmcses.xsd">
+  <loop-process loop="10" quit="fail">
+    <item type="ses-command">
+      <desc>RESET 1</desc>
+      <block>PT5S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <!--item type="ses-command">
+      <desc>OUTP ON</desc>
+      <block>PT1M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp on"/>
+      </ses-command>
+    </item-->
+
+  </loop-process>
+</testcase>

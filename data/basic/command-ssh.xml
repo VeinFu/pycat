@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <command name="remote-exec" proxy="ssh" cmd="None">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+    </command>
+    <command name="command-if-1" ref="remote-exec" cmd="ifconfig">
+      <option name="opt1" args="-a"/>
+    </command>
+    <command name="command-uname" ref="remote-exec" cmd="uname">
+      <option name="opt1" args="-a"/>
+    </command>
+    <command name="command-if-2" cmd="ifconfig" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <option name="opt1" args="-a"/>
+    </command>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <item type="command">
+      <desc>Local command example 1</desc>
+      <command ref="command-if-1"/>
+    </item>
+    <item type="command">
+      <desc>Local command example 2</desc>
+      <command ref="command-uname"/>
+    </item>
+    <item type="command">
+      <desc>Local command example 3</desc>
+      <command ref="command-if-2"/>
+    </item>
+  </loop-process>
+</testcase>
+

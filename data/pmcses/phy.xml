@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="basic" schema="command.xsd">
+  <device-list>
+    <device name="BMC">
+      <uart name="uart-1" port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <if ip="192.168.0.1"/>
+      <ssh ip="192.168.0.1" user="root" passwd="root"/>
+    </device>
+  </device-list>
+  <resource>
+    <phy-status name="phy-status" proxy="uart" timeout="2">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <phy-table number="24">
+        <phy id="0">
+          <attribute name="phy-ready" status="*"/>
+          <attribute name="3G" status="-"/>
+          <attribute name="6G" status="-"/>
+          <attribute name="12G" status="*"/>
+          <attribute name="error-1" status="!"/>
+          <attribute name="error-2" status="!"/>
+        </phy>
+        <phy id="1-10,15,17-20">
+          <attribute name="phy-ready" status="*"/>
+          <attribute name="3G" status="-"/>
+          <attribute name="6G" status="-"/>
+          <attribute name="12G" status="*"/>
+        </phy>
+      </phy-table>
+    </phy-status>
+
+    <error-counter name="error-counter" proxy="uart" timeout="2">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <phy-table number="24">
+        <phy id="0">
+          <ignore-error error_type="error-1"/>
+        </phy>
+        <phy id="1,5">
+          <ignore-error error_type="error-2"/>
+        </phy>
+      </phy-table>
+    </error-counter>
+
+  </resource>
+  <loop-process loop="2" quit="fail">
+
+    <item type="phy-status">
+      <desc>Check PHY Status</desc>
+      <phy-status ref="phy-status"/>
+    </item>
+
+    <item type="error-counter">
+      <desc>Check Error Counter</desc>
+      <error-counter ref="error-counter"/>
+    </item>
+
+  </loop-process>
+</testcase>
+

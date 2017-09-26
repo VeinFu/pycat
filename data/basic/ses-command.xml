@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <ses-command name="i2c-write-read" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1"/>
+      <cmd value="iicwr" timeout="1" recv="2048"/>
+      <option name="slave-address" args="b0"/>
+      <option name="channel-number" args="1"/>
+      <option name="num-bytes-to-read" args="1"/>
+      <option name="write-data" args="0"/>
+      <end-mark name="normal-mode" keyword="cmd"/>
+    </ses-command>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <item type="ses-command">
+      <desc>PSUA MCU</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="iicwr" timeout="1" recv="2048"/>
+        <option name="slave-address" args="b0"/>
+        <option name="channel-number" args="1"/>
+        <option name="num-bytes-to-read" args="1"/>
+        <option name="write-data" args="0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+        <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>PSUB MCU</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="LF"/>
+        <cmd value="iicwr" timeout="1" recv="2048"/>
+        <option name="slave-address" args="b0"/>
+        <option name="channel-number" args="2"/>
+        <option name="num-bytes-to-read" args="1"/>
+        <option name="write-data" args="0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+        <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>PSUA VPD</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1"/>
+        <cmd value="iicwr" timeout="1" recv="2048"/>
+        <option name="slave-address" args="ae"/>
+        <option name="channel-number" args="1"/>
+        <option name="num-bytes-to-read" args="1"/>
+        <option name="write-data" args="0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+        <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>PSUB VPD</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1"/>
+        <cmd value="iicwr" timeout="1" recv="2048"/>
+        <option name="slave-address" args="ae"/>
+        <option name="channel-number" args="2"/>
+        <option name="num-bytes-to-read" args="1"/>
+        <option name="write-data" args="0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+        <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      </ses-command>
+    </item>
+  </loop-process>
+</testcase>
+

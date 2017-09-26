@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <command name="command-echo" proxy="local">
+      <cmd value="echo"/>
+      <option name="opt1" opt="opt1" args="arg1"/>
+      <option name="opt2" opt="opt2" args="arg2 arg22"/>
+      <option name="opt3" opt="opt3" args="arg3 arg33 arg333"/>
+      <option name="opt4" opt="opt4" args="arg4 arg44"/>
+      <input name="answer-1" value="Y"/>
+      <input name="answer-2" value="Y"/>
+      <input name="answer-3" value="Y"/>
+      <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+      <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      <error-filter name="error-filter-3" type="line-count" operation="equal" value="5"/>
+      <error-filter name="error-filter-3" type="char-count" operation="less-than" value="100"/>
+    </command>
+
+    <command name="command-echo" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <cmd value="echo"/>
+      <option name="opt1" opt="opt1" args="arg1"/>
+      <option name="opt2" opt="opt2" args="arg2 arg22"/>
+      <option name="opt3" opt="opt3" args="arg3 arg33 arg333"/>
+      <option name="opt4" opt="opt4" args="arg4 arg44"/>
+      <input name="answer-1" value="Y"/>
+      <input name="answer-2" value="Y"/>
+      <input name="answer-3" value="Y"/>
+      <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+      <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      <error-filter name="error-filter-3" type="line-count" operation="equal" value="5"/>
+    </command>
+
+    <command name="command-echo" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <cmd value="echo" timeout="1" recv="2048"/>
+      <option name="opt1" opt="opt1" args="arg1"/>
+      <option name="opt2" opt="opt2" args="arg2 arg22"/>
+      <option name="opt3" opt="opt3" args="arg3 arg33 arg333"/>
+      <option name="opt4" opt="opt4" args="arg4 arg44"/>
+      <!--input name="answer-1" value="Y"/>
+      <input name="answer-2" value="Y"/>
+      <input name="answer-3" value="Y"/-->
+      <error-filter name="error-filter-1" type="key-word" operation="find" value="error"/>
+      <error-filter name="error-filter-2" type="key-word" operation="find" value="Invalid"/>
+      <error-filter name="error-filter-3" type="line-count" operation="equal" value="5"/>
+    </command>
+
+    <script path="/home/user/test.py"/>
+
+    <item name="item-1" type="command">
+      <desc value="Long Description"/>
+      <delay_at_start value="PT5S"/>
+      <command/>
+      <delay_at_end value="PT5S"/>
+      <repeat value="100"/>
+      <ignore-error error_name="error-1"/>
+      <!--catch-error error_name="error-2"/-->
+      <retry value="5"/>
+    </item>
+
+  </resource>
+  <duration-process duration="PT1M" quit="fail">
+    <item type="command">
+      <desc>Local command example 1</desc>
+      <command cmd="ls -l -a"/>
+    </item>
+    <item type="command">
+      <desc>Local command example 2</desc>
+      <command cmd="ls">
+        <option args="-l"/>
+        <option args="-a"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Local command example 3</desc>
+      <command ref="command-echo"/>
+    </item>
+    <item type="command">
+      <desc>Local command example 4</desc>
+      <command ref="command-echo">
+        <option name="opt2" args="replace arg2"/>
+        <option args="add args x"/>
+      </command>
+    </item>
+  </duration-process>
+</testcase>
+

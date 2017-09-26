@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <command name="AC-ON" cmd="OUTP" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="1" recv="0"/>
+      <option name="action" args="ON"/>
+    </command>
+    <command name="AC-OFF" cmd="OUTP" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="1" recv="0"/>
+      <option name="action" args="OFF"/>
+    </command>
+    <command name="AC-Status" cmd="OUTP?" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="1" recv="0"/>
+    </command>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <item type="command">
+      <desc>Turn on AC</desc>
+      <block>PT10S</block>
+      <command ref="AC-ON"/>
+    </item>
+    <item type="command">
+      <desc>AC Status</desc>
+      <block>PT10S</block>
+      <command ref="AC-Status"/>
+    </item>
+    <item type="command">
+      <desc>Turn off AC</desc>
+      <block>PT10S</block>
+      <command ref="AC-OFF"/>
+    </item>
+    <item type="command">
+      <desc>AC Status</desc>
+      <block>PT10S</block>
+      <command ref="AC-Status"/>
+    </item>
+  </loop-process>
+</testcase>
+

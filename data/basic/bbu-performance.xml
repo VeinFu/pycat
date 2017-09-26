@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <bbu-monitor name="monitor-in-charging" monitor_type="and" interval="1">
+      <bbu name="bbu0" proxy="local" condition_type="or">
+        <cmd value="oxbbu"/>
+        <option name="bmc-ip" args="--bmc-ip 192.168.0.1"/>
+        <option name="bbu" args="--bbu 0"/>
+        <option name="action" args="--display"/>
+        <monitor property="remaining-capacity" value_type="float" units="mWh"/>
+        <monitor property="relative-state-of-charge" value_type="int" units="%"/>
+        <monitor property="voltage" value_type="float" units="mV"/>
+        <monitor property="current" value_type="float" units="mA"/>
+        <monitor property="average-current" value_type="float" units="mA"/>
+        <condition property="relative-state-of-charge" value_type="int" operation="greater-equal" value="100" units="%"/>
+        <condition property="current" value_type="int" operation="less-equal" value="200" units="mA"/>
+        <error-filter property="safety-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="safety-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="operation-status" value_type="binary" operation="not-equal" value="0b110000111" units="bit"/>
+      </bbu>
+      <bbu name="bbu1" proxy="local" condition_type="or">
+        <cmd value="oxbbu"/>
+        <option name="bmc-ip" args="--bmc-ip 192.168.0.1"/>
+        <option name="bbu" args="--bbu 1"/>
+        <option name="action" args="--display"/>
+        <monitor property="remaining-capacity" value_type="float" units="mWh"/>
+        <monitor property="relative-state-of-charge" value_type="int" units="%"/>
+        <monitor property="voltage" value_type="float" units="mV"/>
+        <monitor property="current" value_type="float" units="mA"/>
+        <monitor property="average-current" value_type="float" units="mA"/>
+        <condition property="relative-state-of-charge" value_type="int" operation="greater-equal" value="100" units="%"/>
+        <condition property="current" value_type="int" operation="less-equal" value="200" units="mA"/>
+        <error-filter property="safety-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="safety-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="operation-status" value_type="binary" operation="not-equal" value="0b110000111" units="bit"/>
+      </bbu>
+    </bbu-monitor>
+    <bbu-monitor name="monitor-in-discharging" monitor_type="or" interval="1">
+      <bbu name="bbu0" proxy="local" condition_type="or">
+        <cmd value="oxbbu"/>
+        <option name="bmc-ip" args="--bmc-ip 192.168.0.1"/>
+        <option name="bbu" args="--bbu 0"/>
+        <option name="action" args="--display"/>
+        <monitor property="remaining-capacity" value_type="float" units="mWh"/>
+        <monitor property="relative-state-of-charge" value_type="int" units="%"/>
+        <monitor property="voltage" value_type="float" units="mV"/>
+        <monitor property="current" value_type="float" units="mA"/>
+        <monitor property="average-current" value_type="float" units="mA"/>
+        <condition property="relative-state-of-charge" value_type="int" operation="less-equal" value="0" units="%"/>
+        <condition property="voltage" value_type="float" operation="less-than" value="6500" units="mV"/>
+        <error-filter property="safety-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="safety-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="operation-status" value_type="binary" operation="not-equal" value="0b110000111" units="bit"/>
+      </bbu>
+      <bbu name="bbu1" proxy="local" condition_type="or">
+        <cmd value="oxbbu"/>
+        <option name="bmc-ip" args="--bmc-ip 192.168.0.1"/>
+        <option name="bbu" args="--bbu 1"/>
+        <option name="action" args="--display"/>
+        <monitor property="remaining-capacity" value_type="float" units="mWh"/>
+        <monitor property="relative-state-of-charge" value_type="int" units="%"/>
+        <monitor property="voltage" value_type="float" units="mV"/>
+        <monitor property="current" value_type="float" units="mA"/>
+        <monitor property="average-current" value_type="float" units="mA"/>
+        <condition property="relative-state-of-charge" value_type="int" operation="less-equal" value="0" units="%"/>
+        <condition property="voltage" value_type="float" operation="less-than" value="6500" units="mV"/>
+        <error-filter property="safety-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="safety-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-alert" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="pf-status" value_type="binary" operation="not-equal" value="0b0" units="bit"/>
+        <error-filter property="operation-status" value_type="binary" operation="not-equal" value="0b110000111" units="bit"/>
+      </bbu>
+    </bbu-monitor>
+  </resource>
+  <loop-process loop="1" quit="fail">
+    <item type="bbu-monitor">
+      <desc>BBU Monitor in charging</desc>
+      <bbu-monitor ref="monitor-in-charging"/>
+    </item>
+    <item type="bbu-monitor">
+      <desc>BBU Monitor in discharging</desc>
+      <bbu-monitor ref="monitor-in-discharging"/>
+    </item>
+  </loop-process>
+</testcase>
+

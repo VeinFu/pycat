@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="lsises" type="lsises" schema="command.xsd">
+  <resource>
+	<lsi-i2c-read-check name="lsi-i2c-read-check" proxy="uart" timeout="1" condition_type="and">
+      <uart port="/dev/ttyUSB0" baudrate="115200" new_line_transmit="CR"/>
+      <!--cmd value="iicr" timeout="1"/>-->
+	  <ChannelNumber value="1"/>
+	  <SlaveAddress value="1"/>
+	  <number_bytes_to_read value="1"/>
+      <condition value_type="data" operation="greater-equal" value="9"/>
+      <condition value_type="data" operation="less-equal" value="12"/>
+      <condition value_type="data" operation="constant"/>
+	  <condition value_type="data" operation="equal" value="0x0a"/>
+      <condition value_type="raw" operation="constant"/>
+      <condition value_type="raw" operation="equal" value="02"/><!--multi bytes format:00ffff00 -->
+      <condition value_type="ascii" operation="equal" value="a"/>
+      <condition value_type="ascii" operation="constant"/>
+      <condition operation="constant"/>
+	  <end-mark keyword=" cmd >"/>
+	  <error-filter type="key-word" operation="find" value="Invalid"/>
+	  <error-filter type="key-word" operation="find" value="error"/>
+	  <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-i2c-read-check>
+    <lsi-i2c-write-read-check name="lsi-i2c-write-read-check" proxy="uart" timeout="1" condition_type="and">
+      <uart port="/dev/ttyUSB0" baudrate="115200" new_line_transmit="CR"/>
+      <!--cmd value="iicwr" timeout="1"/>-->
+	  <ChannelNumber value="1"/>
+	  <SlaveAddress value="1"/>
+	  <WriteData value="00 00"/>
+	  <number_bytes_to_read value="1"/>
+      <condition value_type="data" operation="greater-equal" value="9"/>
+      <condition value_type="data" operation="less-equal" value="12"/>
+      <condition value_type="data" operation="constant"/>
+	  <condition value_type="data" operation="equal" value="0x0a"/>
+      <condition value_type="raw" operation="constant"/>
+      <condition value_type="raw" operation="equal" value="02"/><!--multi bytes format:00ffff00 -->
+      <condition value_type="ascii" operation="equal" value="a"/>
+      <condition value_type="ascii" operation="constant"/>
+      <condition operation="constant"/>
+	  <end-mark keyword=" cmd >"/>
+	  <error-filter type="key-word" operation="find" value="Invalid"/>
+	  <error-filter type="key-word" operation="find" value="error"/>
+	  <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-i2c-write-read-check>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <item type="lsi-i2c-write-read-check">
+      <desc>I2C WR check</desc>
+      <lsi-i2c-write-read-check ref="lsi-i2c-write-read-check"/>
+    </item>  
+	<item type="lsi-i2c-read-check">
+      <desc>I2C R check</desc>
+      <lsi-i2c-read-check ref="lsi-i2c-read-check"/>
+    </item>  
+  </loop-process>
+</testcase>
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <loop-process loop="20" quit="fail">
+    <!--item type="command">
+      <desc>POWER ON</desc>
+      <block>PT150S</block>
+      <command cmd="OUTP" proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="9600" timeout="1" recv="0"/>
+        <option name="action" args="ON"/>
+      </command>
+    </item-->
+    <item type="ping-command">
+      <desc>PING UUT</desc>
+      <ping-command proxy="local">
+        <cmd value="ping -c 3 192.168.1.120"/>
+        <sleeptime value="10"/>
+      </ping-command>
+    </item>
+    <item type="reboot-command">
+      <desc>Check CPU COUNT</desc>
+      <reboot-command proxy="ssh">
+        <cmd value="grep 'physical id' /proc/cpuinfo|sort -u|wc -l"/>
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </reboot-command>
+    </item>
+    <item type="reboot-command">
+      <desc>Check CPU CORE COUNT</desc>
+      <reboot-command proxy="ssh">
+        <cmd value="grep 'cpu cores' /proc/cpuinfo|uniq|awk '{print $4}'"/>
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </reboot-command>
+    </item>
+    <item type="reboot-command">
+      <desc>Check MEM SIZE</desc>
+      <reboot-command proxy="ssh">
+        <cmd value="grep MemTotal /proc/meminfo|awk '{print $2}'"/>
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </reboot-command>
+    </item>
+    <item type="reboot-command">
+      <desc>Check HDD COUNT</desc>
+      <reboot-command proxy="ssh">
+        <cmd value="fdisk -l|grep 'Disk /dev/sd'|wc -l"/>
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </reboot-command>
+    </item>
+    <item type="reboot-command">
+      <desc>Check TIME</desc>
+      <reboot-command proxy="ssh">
+        <cmd value="echo $(($(date +%s) - $(cat /proc/uptime|awk -F. '{print $1}')))"/>
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+        <condition value="220"/>
+      </reboot-command>
+    </item>
+
+    <!--item type="device-pcie">
+      <desc>Check PCIE</desc>
+      <device-pcie proxy="ssh">
+        <cmd value="lspci -s 01:0.0 -xvvv"/>
+        <ssh host="192.168.2.1" user="root" passwd="fpga"/>
+        <speedwide speedvalue="5GT/s" widevalue="x8"/>
+      </device-pcie>
+    </item-->
+    <!--item type="command">
+      <desc>REBOOT SYSTEM</desc>
+      <block>PT150S</block>
+      <command cmd="reboot" proxy="ssh">
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </command>
+    </item-->
+    <!--item type="command">
+      <desc>BMC REBOOT SYSTEM</desc>
+      <block>PT150S</block>
+      <command cmd="ipmitool -I lanplus -H 192.168.0.100 -U admin -P admin raw 0 2 2" proxy="local"/>
+    </item-->
+    <item type="command">
+      <desc>REBOOT SYSTEM</desc>
+      <block>PT30S</block>
+      <command cmd="poweroff" proxy="ssh">
+        <ssh host="192.168.1.120" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+
+    <item type="chkpoweroff-command">
+      <desc>BMC CHK POWEROFF</desc>
+      <chkpoweroff-command cmd="ipmitool -I lanplus -H 192.168.0.100 -U admin -P admin raw 0 1" proxy="local"/>
+    </item>
+    
+    <!--item type="command">
+      <desc>POWER OFF</desc>
+      <block>PT20S</block>
+      <command cmd="OUTP" proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="9600" timeout="1" recv="0"/>
+        <option name="action" args="OFF"/>
+      </command>
+    </item-->
+  </loop-process>
+</testcase>
+

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <command name="AC-ON" cmd="on" proxy="telnet">
+      <telnet host="192.168.10.8" user="apc" passwd="apc 123" timeout="10" recv="0"/>
+      <option name="action" args="1"/>
+    </command>
+    <command name="AC-OFF" cmd="off" proxy="telnet">
+      <telnet host="192.168.10.8" user="apc" passwd="apc 123" timeout="10" recv="0"/>
+      <option name="action" args="1"/>
+    </command>
+  </resource>
+  <loop-process loop="500" quit="fail">
+    <!-- Power on and Start OS -->
+    <item type="wait-os-start">
+      <desc>Wait OS Start</desc>
+      <wait-os-start>
+        <timeout>PT3M</timeout>
+      </wait-os-start>
+    </item>
+    <!-- Check System -->
+    <item type="command">
+      <desc>Get BIOS Version</desc>
+      <command cmd="dmidecode -t0 | grep Version" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Get CPU Version</desc>
+      <command cmd="dmidecode -t4 | grep Version" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Get FPGA Version</desc>
+      <command cmd="dmidecode -t4 | grep Version" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Get SAS Chip Info</desc>
+      <command cmd="" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Get HDDs Present Info</desc>
+      <command cmd="df -h" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Get FC/FCOE Card Info</desc>
+      <command cmd="lspci -s xx:xx.x -vvvv" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Check Internal Loopback</desc>
+      <command cmd="" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Check FC/FCOE Loopback</desc>
+      <command cmd="" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Write Data To SAS and Checksum</desc>
+      <command cmd="" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <!-- Reboot OS -->
+    <item type="command">
+      <desc>Reboot OS</desc>
+      <block>PT10S<block>
+      <command cmd="reboot" proxy="ssh">
+	<ssh host="192.168.10.3" user="root" passwd="AAbb1234"/>
+    </item>
+  </loop-process>
+</testcase>
+

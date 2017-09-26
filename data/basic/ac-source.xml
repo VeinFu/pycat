@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <ac-source name="ACSource" type="Chroma61500">
+      <uart port="/dev/ttyUSB1" baudrate="19200"/>
+      <action type="turn-off"/>
+    </ac-source>
+  </resource>
+  <loop-process loop="1" quit="fail">
+    <item type="ac-source">
+      <desc>Turn on</desc>
+      <ac-source ref="ACSource">
+        <action type="turn-on"/>
+      </ac-source>
+    </item>
+    <item type="ac-source">
+      <desc>Status</desc>
+      <block>PT10S</block>
+      <ac-source ref="ACSource">
+        <action type="status"/>
+      </ac-source>
+    </item>
+    <item type="ac-source">
+      <desc>Turn off</desc>
+      <ac-source ref="ACSource">
+        <action type="turn-off"/>
+      </ac-source>
+    </item>
+    <item type="ac-source">
+      <desc>Status</desc>
+      <block>PT10S</block>
+      <ac-source ref="ACSource">
+        <action type="status"/>
+      </ac-source>
+    </item>
+  </loop-process>
+</testcase>
+

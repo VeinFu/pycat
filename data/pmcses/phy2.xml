@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="pmcses" schema="command.xsd">
+   <resource>
+    <check-phy name="phy-status" proxy="uart" timeout="2">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+       <cmd value="status sas_phy" timeout="1" recv="4096"/>
+       <phy-table number="35">
+        <phy id="0">
+          <attribute name="Phy Ready" status="*"/>
+          <attribute name="Rate=3G" status="-"/>
+          <attribute name="Rate=6G" status="-"/>
+          <attribute name="Rate=12G" status="*"/>
+          <attribute name="I-Phy Reset" status="!"/>
+        </phy>
+        <phy id="1-10,15,17-20">
+          <attribute name="Phy Ready" status="*"/>
+          <attribute name="Rate=3G" status="-"/>
+          <attribute name="Rate=6G" status="-"/>
+          <attribute name="Rate=12G" status="*"/>
+          <attribute name="I-Phy Reset" status="!"/>
+        </phy>
+      </phy-table>
+    </check-phy>
+  </resource>
+  <loop-process loop="1" quit="never">
+    <item type="check-phy">
+      <desc>Check PHY Status</desc>
+      <check-phy ref="phy-status"/>
+   </item>
+  </loop-process>
+</testcase>
+

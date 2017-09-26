@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <bbu name="bbu0" cmd="oxbbu" proxy="local">
+      <id number="0"/>
+      <action type="start-charge"/>
+    </bbu>
+    <bbu-monitor name="bbu-monitor" cmd="oxbbu" proxy="local">
+       <interval value="PT5S"/>
+       <condition property="rcos" option="less-then" value="30%"/>
+       <condition property="voltage" option="less-then" value="10000 mV"/>
+    </bbu-monitor>
+    <ac-source name="ACSource" type="Chroma61500">
+      <uart port="/dev/ttyUSB1" baudrate="19200"/>
+      <action type="turn-off"/>
+    </ac-source>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <!-- Charge -->
+    <item type="bbu">
+      <desc>Start to charge BBU0</desc>
+      <bbu ref="bbu0">
+        <action type="start-charge"/>
+      </bbu>
+    </item>
+    <item type="bbu-monitor">
+      <desc>Start a monitor</desc>
+      <bbu-monitor ref="bbu-monitor">
+         <interval value="PT5S"/>
+         <condition property="relative-state-of-charge" option="greater-equal" value="100%"/>
+      </bbu-monitor>
+    </item>
+    <!-- Discharge -->
+    <item type="bbu">
+      <desc>Stop charging BBU0</desc>
+      <bbu ref="bbu0">
+        <action type="stop-charge"/>
+      </bbu>
+    </item>
+    <item type="bbu">
+      <desc>Dump Armed BBU0</desc>
+      <bbu ref="bbu0">
+        <action type="dump-armed"/>
+      </bbu>
+    </item>
+    <item type="bbu">
+      <desc>OK Reduce Power</desc>
+      <bbu ref="bbu0">
+        <action type="reduce-power"/>
+      </bbu>
+    </item>
+    <item type="ac-source">
+      <desc>Status</desc>
+      <block>PT10S</block>
+      <ac-source ref="ACSource">
+        <action type="turn-off"/>
+      </ac-source>
+    </item>
+    <item type="memory-dump">
+      <desc>Dump memory</desc>
+      <memory-dump name="memory-dump">
+         <size value="4GB"/>
+         <output path="/tmp/mem.dump"/>
+      </memory-dump>
+    </item>
+    <!-- Close OS -->
+    <item type="close-os">
+      <desc>Close OS</desc>
+      <block>PT10S<block>
+      <close-os>
+        <ip value="192.168.1.1"/>
+      </close-os>
+    </item>
+    <item type="ac-source">
+      <desc>Status</desc>
+      <block>PT10S</block>
+      <ac-source ref="ACSource">
+        <action type="turn-on"/>
+      </ac-source>
+    </item>
+    <item type="wait-os-start">
+      <desc>Wait OS Start</desc>
+      <wait-os-start>
+        <timeout>PT3M</timeout>
+      </wait-os-start>
+    </item>
+    <item type="check-sum">
+      <desc>Check dump File</desc>
+      <check-sum>
+        <file path="/tmp/mem.dump">
+        <md5 value="f35d4b3323008d90eb3a227fe3d2daba">
+      </check-sum>
+    </item>
+  </loop-process>
+</testcase>
+

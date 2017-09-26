@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource/>
+  <loop-process loop="2" quit="never">
+    <item type="parallel-command">
+      <desc>non-block</desc>
+      <parallel-command proxy="ssh" deamon="True">
+        <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+        <cmd value="sleep 5;ls" label="non-block"/>
+      </parallel-command>
+    </item>
+    <item type="parallel-command">
+      <desc>parallel-command</desc>
+      <parallel-command proxy="ssh" deamon="False">
+        <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+        <cmd value="ls" label="ls"/>
+        <cmd value="lspci" label="lspci-1"/>
+        <cmd value="pwd" label="pwd"/>
+        <cmd value="lspci" label="lspci-2"/>
+        <cmd value="lspci" label="lspci-3"/>
+        <!--cmd value="cat /" label="cat"/-->
+      </parallel-command>
+    </item>
+    <item type="parallel-command">
+      <desc>block</desc>
+      <parallel-command proxy="ssh" deamon="False">
+        <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+        <cmd value="sleep 5;ls" label="block"/>
+      </parallel-command>
+    </item>
+
+  </loop-process>
+</testcase>

@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="pmcses" schema="pmcses.xsd">
+  <loop-process loop="1" quit="fail">
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <!--cmd value="diag_ui" timeout="1" recv="2048"/-->
+        <path file="/home/AAbb1234/Desktop/Atlas/0000/istr_flash.bin"/>
+        <path file="/home/AAbb1234/Desktop/Atlas/0000/tamer_12g_rom.bin"/>
+        <vend_id name="CLS"/>
+        <product_id name="R0885-F0100-01"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="313031"/>
+        <version name="DAT1" ver="313031" misc="Using"/>
+        <version name="IMG0" ver="313031"/>
+        <version name="IMG1" ver="313031" misc="Running"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG1/DATA1"/>
+        <!--version name="CPLD" ver="010002"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="313031"/>
+        <version name="DAT1" ver="313031" misc="Using"/>
+        <version name="IMG0" ver="313031"/>
+        <version name="IMG1" ver="313031" misc="Running"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG1/DATA1"/>
+        <!--version name="CPLD" ver="010002"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <!--item type="ses-command-comparefirstvalue">
+      <desc>PHY CHECK</desc>
+      <ses-command-comparefirstvalue proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="status sas_phy" timeout="1" recv="4096"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!-error-filter type="key-word" operation="find" value="error"/->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-comparefirstvalue>
+    </item-->
+
+
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <!--cmd value="diag_ui" timeout="1" recv="2048"/-->
+        <path file="/home/AAbb1234/Desktop/Atlas/0001/istr_flash_1.bin"/>
+        <path file="/home/AAbb1234/Desktop/Atlas/0001/tamer_12g_rom_1.bin"/>
+        <vend_id name="CLS"/>
+        <product_id name="R0885-F0100-01"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="303030" misc="Using"/>
+        <version name="DAT1" ver="313031"/>
+        <version name="IMG0" ver="303030" misc="Running"/>
+        <version name="IMG1" ver="313031"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG0/DATA0"/>
+        <!--version name="CPLD" ver="010102"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="303030" misc="Using"/>
+        <version name="DAT1" ver="313031"/>
+        <version name="IMG0" ver="303030" misc="Running"/>
+        <version name="IMG1" ver="313031"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG0/DATA0"/>
+        <!--version name="CPLD" ver="010102"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <!--item type="ses-command-comparefirstvalue">
+      <desc>PHY CHECK</desc>
+      <ses-command-comparefirstvalue proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="status sas_phy" timeout="1" recv="4096"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!-error-filter type="key-word" operation="find" value="error"/->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-comparefirstvalue>
+    </item-->
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <!--cmd value="diag_ui" timeout="1" recv="2048"/-->
+        <path file="/home/AAbb1234/Desktop/Atlas/0001/istr_flash_1.bin"/>
+        <path file="/home/AAbb1234/Desktop/Atlas/0001/tamer_12g_rom_1.bin"/>
+        <vend_id name="CLS"/>
+        <product_id name="R0885-F0100-01"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="303030"/>
+        <version name="DAT1" ver="303030" misc="Using"/>
+        <version name="IMG0" ver="303030"/>
+        <version name="IMG1" ver="303030" misc="Running"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG1/DATA1"/>
+        <!--version name="CPLD" ver="010102"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="303030"/>
+        <version name="DAT1" ver="303030" misc="Using"/>
+        <version name="IMG0" ver="303030"/>
+        <version name="IMG1" ver="303030" misc="Running"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG1/DATA1"/>
+        <!--version name="CPLD" ver="010102"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <!--cmd value="diag_ui" timeout="1" recv="2048"/-->
+        <path file="/home/AAbb1234/Desktop/Atlas/0000/istr_flash.bin"/>
+        <path file="/home/AAbb1234/Desktop/Atlas/0000/tamer_12g_rom.bin"/>
+        <vend_id name="CLS"/>
+        <product_id name="R0885-F0100-01"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="313031" misc="Using"/>
+        <version name="DAT1" ver="303030"/>
+        <version name="IMG0" ver="313031" misc="Running"/>
+        <version name="IMG1" ver="303030"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG0/DATA0"/>
+        <!--version name="CPLD" ver="010002"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+    <item type="ses-command">
+      <desc>IMG SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 i t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>DATA SWITCH</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="qinfo 1 d t"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <version name="BOOT" ver="303031"/>
+        <version name="DAT0" ver="313031" misc="Using"/>
+        <version name="DAT1" ver="303030"/>
+        <version name="IMG0" ver="313031" misc="Running"/>
+        <version name="IMG1" ver="303030"/>
+        <version name="BCFG" ver="303031" misc="AIF=IMG0/DATA0"/>
+        <!--version name="CPLD" ver="010002"/-->
+        <cmd value="qinfo" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <!--item type="check_cpld">
+      <desc>CPLD CHECK</desc>
+      <check_cpld proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="115200" timeout="0.1"/>
+        <cpld_ver value="0.0.0.1"/>
+        <cmd value="fru get" timeout="1" recv="2048"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_cpld>
+    </item-->
+
+  </loop-process>
+</testcase>
+

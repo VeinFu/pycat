@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:cls="http://www.celestica.com">
+
+<xs:complexType name="Command">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="uart" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="port" type="xs:string" use="required"/>
+        <xs:attribute name="baudrate" type="xs:integer" use="required"/>
+        <xs:attribute name="timeout" type="xs:decimal" use="optional"/>
+        <xs:attribute name="recv" type="xs:integer" use="optional"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="option" minOccurs="0" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:attribute name="args" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+        <xs:enumeration value="uart"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="OS">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:attribute name="type" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="shutdown"/>
+              <xs:enumeration value="reboot"/>
+              <xs:enumeration value="wait-start"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="timeout" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:duration" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="BBU">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="cmd" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="option" minOccurs="0" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="args" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="monitor" minOccurs="0" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:attribute name="property" type="xs:string" use="required"/>
+        <xs:attribute name="value_type" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="binary"/>
+              <xs:enumeration value="int"/>
+              <xs:enumeration value="float"/>
+              <xs:enumeration value="string"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="units" type="xs:string" use="optional"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="condition" minOccurs="0" maxOccurs="unbounded">
+      <xs:complexType>
+        <xs:attribute name="property" type="xs:string" use="required"/>
+        <xs:attribute name="value_type" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="binary"/>
+              <xs:enumeration value="int"/>
+              <xs:enumeration value="float"/>
+              <xs:enumeration value="string"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="operation" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="less-than"/>
+              <xs:enumeration value="less-equal"/>
+              <xs:enumeration value="equal"/>
+              <xs:enumeration value="greater-than"/>
+              <xs:enumeration value="greater-equal"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="value" type="xs:string" use="optional"/>
+        <xs:attribute name="units" type="xs:string" use="optional"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:attribute name="condition_type" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="and"/>
+        <xs:enumeration value="or"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="BBUMonitor">
+  <xs:sequence>
+    <xs:element name="bbu" type="BBU" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="monitor_type" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="and"/>
+        <xs:enumeration value="or"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:attribute name="interval" type="xs:decimal" use="optional"/>
+</xs:complexType>
+
+<xs:complexType name="DeviceHDD">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="number" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:integer" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="DeviceNetif">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="number" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:integer" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="DevicePCI">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="number" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:integer" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="DeviceScsi">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="number" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:integer" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="FileCheckSum">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="path" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="md5" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="remove-file" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="true"/>
+              <xs:enumeration value="false"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="MemoryDump">
+  <xs:sequence>
+    <xs:element name="ssh" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="host" type="xs:string" use="required"/>
+        <xs:attribute name="user" type="xs:string" use="required"/>
+        <xs:attribute name="passwd" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="size" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="value" type="xs:decimal" use="required"/>
+        <xs:attribute name="units" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="GB"/>
+              <xs:enumeration value="MB"/>
+              <xs:enumeration value="KB"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="output" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="path" type="xs:string" use="required"/>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="cmd" type="xs:string" use="optional"/>
+  <xs:attribute name="proxy" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="local"/>
+        <xs:enumeration value="ssh"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="ACSource">
+  <xs:sequence>
+    <xs:element name="uart" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="port" type="xs:string" use="required"/>
+        <xs:attribute name="baudrate" type="xs:integer" use="required"/>
+      </xs:complexType>
+    </xs:element>
+    <xs:element name="action" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+        <xs:attribute name="type" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="turn-on"/>
+              <xs:enumeration value="turn-off"/>
+              <xs:enumeration value="status"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:string" use="optional"/>
+  <xs:attribute name="ref" type="xs:string" use="optional"/>
+  <xs:attribute name="type" use="optional">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Chroma6530"/>
+        <xs:enumeration value="Chroma61500"/>
+        <xs:enumeration value="Chroma61501"/>
+        <xs:enumeration value="Chroma61502"/>
+        <xs:enumeration value="Chroma61503"/>
+        <xs:enumeration value="Chroma61504"/>
+        <xs:enumeration value="Relay"/>
+        <xs:enumeration value="IPS"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="Item">
+  <xs:sequence>
+    <xs:element name="desc" type="xs:string"/>
+    <xs:element name="block" type="xs:duration" minOccurs="0" maxOccurs="1"/>
+    <xs:choice>
+      <xs:element name="ac-source" type="ACSource"/>
+      <xs:element name="bbu-monitor" type="BBUMonitor"/>
+      <xs:element name="command" type="Command"/>
+      <xs:element name="device-hdd" type="DeviceHDD"/>
+      <xs:element name="device-netif" type="DeviceNetif"/>
+      <xs:element name="device-pci" type="DevicePCI"/>
+      <xs:element name="device-scsi" type="DeviceScsi"/>
+      <xs:element name="file-check-sum" type="FileCheckSum"/>
+      <xs:element name="memory-dump" type="MemoryDump"/>
+      <xs:element name="os" type="OS"/>
+    </xs:choice>
+  </xs:sequence>
+  <xs:attribute name="type" use="required">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="ac-source"/>
+        <xs:enumeration value="bbu-monitor"/>
+        <xs:enumeration value="command"/>
+        <xs:enumeration value="device-hdd"/>
+        <xs:enumeration value="device-netif"/>
+        <xs:enumeration value="device-pci"/>
+        <xs:enumeration value="device-scsi"/>
+        <xs:enumeration value="file-check-sum"/>
+        <xs:enumeration value="memory-dump"/>
+        <xs:enumeration value="os"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="LoopProcess">
+  <xs:sequence>
+    <xs:element name="item" type="Item"  maxOccurs="unbounded"/>
+  </xs:sequence>
+  <xs:attribute name="loop" type="xs:positiveInteger" use="required"/>
+  <xs:attribute name="quit" use="required">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="fail"/>
+        <xs:enumeration value="never"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="DurationProcess">
+  <xs:sequence>
+    <xs:element name="item" type="Item"  maxOccurs="unbounded"/>
+  </xs:sequence>
+  <xs:attribute name="duration" type="xs:duration" use="required"/>
+  <xs:attribute name="quit" use="required">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="fail"/>
+        <xs:enumeration value="never"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="Resource">
+  <xs:sequence>
+    <xs:element name="ac-source" type="ACSource" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="bbu-monitor" type="BBUMonitor" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="command" type="Command" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="device-hdd" type="DeviceHDD" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="device-netif" type="DeviceNetif" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="device-pci" type="DevicePCI" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="device-scsi" type="DeviceScsi" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="file-check-sum" type="FileCheckSum" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="memory-dump" type="MemoryDump" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="os" type="OS" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<!-- Definition of testcase -->
+<xs:element name="testcase">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="resource" type="Resource"/>
+      <xs:choice>
+        <xs:element name="loop-process" type="LoopProcess"/>
+        <xs:element name="duration-process" type="DurationProcess"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="plugin" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="schema" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:element>
+
+
+
+</xs:schema>

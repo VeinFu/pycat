@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource/>
+  <loop-process loop="2" quit="fail">
+    <item type="command">
+      <desc>I2C READ</desc>
+      <command name="i2c-read" cmd="i2cget -f -y 0 0x50 0" proxy="local"/>
+    </item>
+  <!--
+    <item type="command">
+      <desc>I2C WRITE</desc>
+      <command name="i2c-write" proxy="local" cmd="i2cset -f -y 0 0x50 0 0x8"/>
+    </item>    
+    -->
+    <item type="i2c-read-check">
+      <desc>I2C DATA CHECK</desc>
+      <i2c-read-check name="i2c-read-check" proxy="local" condition_type="and">
+        <bus value="0"/>
+        <chip value="0x50"/>
+        <data value="0xa"/>
+        <num-bytes-to-read value="1"/>
+        <condition value_type="data" operation="greater-equal" value="0x00"/>
+        <condition value_type="data" operation="less-equal" value="0xff"/>
+        <condition value_type="data" operation="constant"/>
+	<condition value_type="raw" operation="equal" value="72"/><!--multi bytes format: 00ffff00 -->
+        <condition value_type="raw" operation="constant"/>
+        <condition value_type="ascii" operation="equal" value="r"/>
+        <condition value_type="ascii" operation="constant"/>
+        <condition operation="constant"/>
+        <datastore name="eeprom" value_type="int" units="mWh"/>
+      </i2c-read-check>
+    </item>
+  </loop-process>
+</testcase>
+

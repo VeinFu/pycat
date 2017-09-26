@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="lsises" type="lsises" schema="lsises.xsd">
+  <loop-process loop="1" quit="fail">
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <cmd value="sg_write_buffer --id=1 --in=/media/Atlas_ses_fw/1.0.1.2/Atlas_SEM_ses_1.0.1.2_cfg_r341.bin -m 1 /dev/sg"/>
+        <cmd value="sg_write_buffer --id=0 --in=/media/Atlas_ses_fw/1.0.1.2/Atlas_SEM_ses_1.0.1.2_osa_r341.fw -m 1 /dev/sg"/>
+        <vend_id name="CLS"/>
+        <product_id name="Atlas"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="1.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="1.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="1.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <!--phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="11"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF357F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	  <phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value=""/>
+            <phy_info name="NLR" value="0x0"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-------"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value=""/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x3E"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="1-1"/>
+	  </phy>
+          <phy PHY_ID="SXP1">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="1----1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_4676F17F"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="041"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy>
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="4"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <!--phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="11"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF357F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+	  </phy-->
+	  <!--phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62EFF912"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x24"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	  <!--phy PHY_ID="31">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62F00EFA"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x25"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="031"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	    
+          <phy PHY_ID="SXP0">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="--11---"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_4676F1BD"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x2F"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x60"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="040"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy>
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="5"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="--1--1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF347F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="---"/>
+	  </phy>
+	  <!--phy PHY_ID="12">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62F0416E"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x23"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="012"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+          <!--phy PHY_ID="24">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62EFC55A"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x22"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="024"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+
+	  <!--phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value=""/>
+            <phy_info name="NLR" value="0x0"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value=""/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x07"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="1-1"/>
+	  </phy-->
+          <!--phy PHY_ID="SXP0">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value=""/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DE3DFD"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x04"/>
+            <phy_info name="CONN_TYPE" value="0x2F"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x0E"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="024"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy-->
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="6"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+    <item type="fw_program">
+      <desc>FW PROGRAM</desc>
+      <fw_program proxy="local">
+        <cmd value="sg_write_buffer --id=1 --in=/media/Atlas_ses_fw/11.0.1.2/11.0.1.2_tamer_cfg.bin -m 1 /dev/sg"/>
+        <cmd value="sg_write_buffer --id=0 --in=/media/Atlas_ses_fw/11.0.1.2/11.0.1.2_sas3xfw.fw -m 1 /dev/sg"/>
+        <vend_id name="CLS"/>
+        <product_id name="Atlas"/>
+      </fw_program>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="reset"/>
+      </ses-command>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="11.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="11.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_fw">
+      <desc>FW CHECK</desc>
+      <check_fw proxy="uart">
+        <uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <version name="Active Firmware" ver="11.0.1.2"/>
+        <cmd value="rev" timeout="1" recv="2048"/>
+        <product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </check_fw>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <!--phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="11"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF357F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	  <phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value=""/>
+            <phy_info name="NLR" value="0x0"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-------"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value=""/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x3E"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="1-1"/>
+	  </phy>
+          <phy PHY_ID="SXP1">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="1----1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_4676F17F"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="041"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy>
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="4"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB1" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <!--phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="11"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF357F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+	  </phy-->
+	  <!--phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62EFF912"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x24"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	  <!--phy PHY_ID="31">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62F00EFA"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x25"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="031"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+	    
+          <phy PHY_ID="SXP0">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="--11---"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_4676F1BD"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x2F"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x60"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="040"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy>
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="5"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+    <item type="check_phy">
+      <desc>PHY CHECK</desc>
+      <check_phy proxy="uart">
+        <!--uart port="/dev/ttyUSB2" baudrate="38400" timeout="0.1" end-of-line="CR"/-->
+	<phy_map>
+          <phy PHY_ID="13">
+            <phy_info name="DEV_TYPE" value="EXP"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="--1--1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DF347F"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x09"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x00"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x00"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="013"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="---"/>
+	  </phy>
+	  <!--phy PHY_ID="12">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62F0416E"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x23"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="012"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+          <!--phy PHY_ID="24">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x03"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-1-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="5000C500_62EFC55A"/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x22"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="024"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="-"/>
+	  </phy-->
+
+	  <!--phy PHY_ID="1">
+            <phy_info name="DEV_TYPE" value=""/>
+            <phy_info name="NLR" value="0x0"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value="-"/>
+            <phy_info name="ATTACHED_SAS_ADDR" value=""/>
+            <phy_info name="ROUTE_TYPE" value="T"/>
+            <phy_info name="ZONE_GRP" value="0x0b"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x05"/>
+            <phy_info name="CONN_TYPE" value="0x20"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x07"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="001"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value="1-1"/>
+	  </phy-->
+          <!--phy PHY_ID="SXP0">
+            <phy_info name="DEV_TYPE" value="END"/>
+            <phy_info name="NLR" value="12G"/>
+            <phy_info name="PHY_CNG_CNT" value="0x01"/>
+            <phy_info name="SSSSSSS_STMSTMA_PPPPPPT_IIITTTA" value=""/>
+            <phy_info name="ATTACHED_SAS_ADDR" value="500E0ECA_03DE3DFD"/>
+            <phy_info name="ROUTE_TYPE" value="D"/>
+            <phy_info name="ZONE_GRP" value="0x01"/>
+            <phy_info name="ZONE_CTRL_BUS" value="0x04"/>
+            <phy_info name="CONN_TYPE" value="0x2F"/>
+            <phy_info name="CONN_ELEM_INDX" value="0x0E"/>
+            <phy_info name="CONN_PHY_LINK" value="0x00"/>
+            <phy_info name="MAP_PHY_ID" value="024"/>
+            <phy_info name="E_E_DFR_FCR_BSL" value=""/>
+          </phy-->
+	</phy_map>
+        <!--cmd value="phyinfo" timeout="1" recv="4096"/-->
+        <sg-id value="6"/>
+	<product_id name="Atlas"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/> 
+      </check_phy>
+    </item>
+  </loop-process>
+</testcase>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource/>
+  <loop-process loop="2" quit="never">
+    <!-- Reset Ethernet on SPA-->
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth10 down" proxy="ssh">
+        <ssh host="192.168.11.11" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth10 up" proxy="ssh">
+        <ssh host="192.168.11.11" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth9 down" proxy="ssh">
+        <ssh host="192.168.11.11" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth9 up" proxy="ssh">
+        <ssh host="192.168.11.11" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+
+    <!-- Reset Ethernet on SPB-->
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth8 down" proxy="ssh">
+        <ssh host="192.168.13.12" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth8 up" proxy="ssh">
+        <ssh host="192.168.13.12" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth9 down" proxy="ssh">
+        <ssh host="192.168.13.12" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+    <item type="command">
+      <desc>Ethernet Reset</desc>
+      <command cmd="ifconfig eth9 up" proxy="ssh">
+        <ssh host="192.168.13.12" user="root" passwd="AAbb1234"/>
+      </command>
+    </item>
+
+    <!-- Set CMD, etc -->
+
+    <!-- Trafic Test -->
+
+    <!-- Package Loss -->
+    <item type="package-loss">
+      <desc>package-loss</desc>
+      <package-loss proxy="ssh">
+        <ssh-a host="127.0.0.1" user="root" passwd="qwe123"/>
+        <ssh-b host="127.0.0.1" user="root" passwd="qwe123"/>
+        <!--p2p port-a="SPA-Slot1-Port0" eth-a="eth10" port-b="SPB-Slot1-Port0" eth-b="eth9"/>
+        <p2p port-a="SPA-Slot1-Port1" eth-a="eth9" port-b="SPB-Slot1-Port1" eth-b="eth8"/-->
+        <p2p port-a="SPA-Slot1-Port1" eth-a="p2p1" port-b="SPB-Slot1-Port1" eth-b="p2p1"/>
+      </package-loss>
+    </item>
+  </loop-process>
+</testcase>

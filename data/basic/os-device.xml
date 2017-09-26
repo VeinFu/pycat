@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="basic" type="basic" schema="command.xsd">
+  <resource>
+    <device-hdd name="target-hdd" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <number value="24"/>
+    </device-hdd>
+    <device-netif name="target-netif" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <number value="4"/>
+    </device-netif>
+    <device-pci name="target-pci" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <number value="64"/>
+    </device-pci>
+    <device-scsi name="target-scsi" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <number value="24"/>
+    </device-scsi>
+    <file-check-sum name="file-check-sum" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <path value="/tmp/mem.dump"/>
+      <md5 value="f35d4b3323008d90eb3a227fe3d2daba"/>
+      <remove-file value="true"/>
+    </file-check-sum>
+    <memory-dump name="memory-dump" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <size value="4" units="GB"/>
+      <output path="/tmp/mem.dump"/>
+    </memory-dump>
+
+    <os name="os-shutdown" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <action type="shutdown"/>
+      <timeout value="PT3M"/>
+    </os>
+    <os name="os-reboot" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <action type="reboot"/>
+      <timeout value="PT3M"/>
+    </os>
+    <os name="os-wait-start" proxy="ssh">
+      <ssh host="127.0.0.1" user="root" passwd="qwe123"/>
+      <action type="wait-start"/>
+      <timeout value="PT3M"/>
+    </os>
+  </resource>
+  <loop-process loop="2" quit="fail">
+    <item type="bbu-monitor">
+      <desc>BBU Monitor</desc>
+      <bbu-monitor ref="bbu-monitor"/>
+    </item>
+    <item type="device-hdd">
+      <desc>Check HDD Number</desc>
+      <device-hdd ref="target-hdd"/>
+    </item>
+    <item type="device-netif">
+      <desc>Check Network Interface Number</desc>
+      <device-netif ref="target-netif"/>
+    </item>
+    <item type="device-pci">
+      <desc>Check PCI Number</desc>
+      <device-pci ref="target-pci"/>
+    </item>
+    <item type="device-mem">
+      <desc>Check MEM</desc>
+      <device-mem os="linux">
+        <ssh host="192.168.10.1" user="root" passwd="qwe123"/>
+        <capacity value="1536120"/>
+      </device-mem>
+    </item>
+    <item type="file-check-sum">
+      <desc>File check sum</desc>
+      <file-check-sum ref="file-check-sum"/>
+    </item>
+    <item type="memory-dump">
+      <desc>Memory Dump</desc>
+      <memory-dump ref="memory-dump"/>
+    </item>
+    <item type="os">
+      <desc>OS Shutdown</desc>
+      <os ref="os-shutdown"/>
+    </item>
+    <item type="os">
+      <desc>OS Reboot</desc>
+      <os ref="os-reboot"/>
+    </item>
+    <item type="os">
+      <desc>Wait OS Start</desc>
+      <os ref="os-wait-start"/>
+    </item>
+  </loop-process>
+</testcase>
+

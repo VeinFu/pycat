@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="lsises" type="lsises" schema="command.xsd">
+  <resource>
+    <i2c-write-read name="i2c-write-read" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <cmd value="iiwr" timeout="1"/>
+      <option name="slave-address" value="B0"/>
+      <option name="channel-number" value="1"/>
+      <option name="number-bytes-to-read" value="1"/>
+      <option name="write-data" value="1"/>
+      <data-type value="binary"/>
+    </i2c-write-read>
+
+    <i2c-write name="i2c-write" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <cmd value="iiw" timeout="1"/>
+      <option name="slave-address" value="B0"/>
+      <option name="channel-number" value="1"/>
+      <option name="write-data" value="1"/>
+      <data-type value="binary"/>
+    </i2c-write>
+
+    <i2c-read name="i2c-read" proxy="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <cmd value="iir" timeout="1"/>
+      <option name="slave-address" value="B0"/>
+      <option name="channel-number" value="1"/>
+      <option name="number-bytes-to-read" value="1"/>
+      <data-type value="binary"/>
+      <!--data-type value="string"/-->
+    </i2c-read>
+
+    <i2c-check name="i2c-check" proxy="uart" condition_type="or">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <cmd value="iiw" timeout="1"/>
+      <option name="slave-address" value="B0"/>
+      <option name="channel-number" value="1"/>
+      <option name="number-bytes-to-read" value="1"/>
+      <condition value_type="binary" operation="equal" value="00"/>
+      <condition value_type="binary" operation="greater-equal" value="00"/>
+      <condition value_type="binary" operation="less-equal" value="10"/>
+      <condition value_type="binary" operation="constant"/>
+      <condition value_type="binary-file" operation="euqal" value="/tmp/vpd.txt"/>
+      <condition value_type="serial-binary" operation="equal" value="00 00 00 00"/>
+      <condition value_type="serial-binary" operation="constant"/>
+      <condition value_type="string" operation="equal" value="abcde"/>
+    </i2c-check>
+
+    <vpd-check name="vpd-check" type="uart" condition_type="or">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <cmd value="iiw" timeout="1"/>
+      <option name="slave-address" value=""/>
+      <option name="channel-number" value="1"/>
+      <option name="number-bytes-to-read" value=""/>
+      <offset-range start="0x0000" end="0xffff"/>
+      <block-size value="128"/>
+      <condition value_type="binary-file" operation="euqal" value="/tmp/vpd.txt"/>
+    </vpd-check>
+
+    <phy-status-table name="phy-table">
+      <phy number="0">
+        <attribute name="phy-ready" status="on"/>
+        <attribute name="3G" status="off"/>
+        <attribute name="6G" status="off"/>
+        <attribute name="12G" status="on"/>
+        <attribute name="error-1" status="happened"/>
+        <attribute name="error-2" status="not-happened"/>
+      </phy>
+      <phy number="1-10,15,17-20">
+        <attribute name="phy-ready" status="on"/>
+        <attribute name="3G" status="off"/>
+        <attribute name="6G" status="off"/>
+        <attribute name="12G" status="on"/>
+      </phy>
+    </phy-status-table>
+
+    <phy-status name="phy-status" type="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <phy-number value="24"/>
+      <phy-status-table ref="phy-table"/>
+    </phy-status>
+
+    <error-counter name="error-counter" type="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <phy-number value="24"/>
+      <ignore-error phy="0-10,12,15-20" error_type="error-1"/>
+      <ignore-error phy="21,23" error_type="error-2"/>
+    </error-counter>
+
+    <ses-version name="ses-version" type="uart">
+      <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+      <partition name="DATA0" version="b001"/>
+      <partition name="IMG0" version="b002"/>
+    </ses-version>
+    <!--gpio-read/-->
+    <!--gpio-write/-->
+    <!--gpio-check/-->
+    <!--sgpio-read/-->
+    <!--sgpio-write/-->
+    <!--sgpio-check/-->
+
+  </resource>
+  <loop-process loop="2" quit="fail">
+  </loop-process>
+</testcase>
+

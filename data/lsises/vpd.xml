@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="lsises" type="lsises" schema="command.xsd">
+  <resource>
+    <lsi-vpd-read name="lsi-vpd-read-file" proxy="uart" timeout="1">
+      <uart port="/dev/ttyUSB0" baudrate="38400" new_line_transmit="CR"/>
+      <!--cmd value="iicwr" timeout="1"/>-->
+      <port-id value="0"/>
+      <device-addr value="0xa6"/>
+      <offset value="0"/>
+      <offset-width value="2"/>
+      <block-size value="32"/>
+      <number-bytes value="256"/>
+      <binary-file value="/tmp/vpd.txt"/>
+      <end-mark keyword="cmd"/>
+      <error-filter type="key-word" operation="find" value="Invalid"/>
+      <error-filter type="key-word" operation="find" value="error"/>
+      <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-vpd-read>
+
+    <lsi-vpd-write name="lsi-vpd-write-zero" proxy="uart" timeout="1">
+      <uart port="/dev/ttyUSB0" baudrate="38400" new_line_transmit="CR"/>
+      <!--cmd value="iicw" timeout="1"/>-->
+      <port-id value="0"/>
+      <device-addr value="0xa6"/>
+      <offset value="0"/>
+      <offset-width value="2"/>
+      <block-size value="8"/>
+      <number-bytes value="256"/>
+      <binary-data value="0"/>
+      <end-mark keyword="cmd"/>
+      <error-filter type="key-word" operation="find" value="Invalid"/>
+      <error-filter type="key-word" operation="find" value="error"/>
+      <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-vpd-write>
+
+    <lsi-vpd-write name="lsi-vpd-write-file" proxy="uart" timeout="1">
+      <uart port="/dev/ttyUSB0" baudrate="38400" new_line_transmit="CR"/>
+      <!--cmd value="iicw" timeout="1"/>-->
+      <port-id value="0"/>
+      <device-addr value="0xa6"/>
+      <offset value="0"/>
+      <offset-width value="2"/>
+      <block-size value="8"/>
+      <number-bytes value="256"/>
+      <binary-file value="/tmp/vpd.txt"/>
+      <end-mark keyword="cmd"/>
+      <error-filter type="key-word" operation="find" value="Invalid"/>
+      <error-filter type="key-word" operation="find" value="error"/>
+      <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-vpd-write>
+
+    <lsi-vpd-check name="lsi-vpd-check-zero" proxy="uart" timeout="1">
+      <uart port="/dev/ttyUSB0" baudrate="38400" new_line_transmit="CR"/>
+      <!--cmd value="iicwr" timeout="1"/>-->
+      <port-id value="0"/>
+      <device-addr value="0xa6"/>
+      <offset value="0"/>
+      <offset-width value="2"/>
+      <block-size value="32"/>
+      <number-bytes value="256"/>
+      <binary-data value="0"/>
+      <end-mark keyword="cmd"/>
+      <error-filter type="key-word" operation="find" value="Invalid"/>
+      <error-filter type="key-word" operation="find" value="error"/>
+      <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-vpd-check>
+
+    <lsi-vpd-check name="lsi-vpd-check-file" proxy="uart" timeout="1">
+      <uart port="/dev/ttyUSB0" baudrate="38400" new_line_transmit="CR"/>
+      <!--cmd value="iicwr" timeout="1"/>-->
+      <port-id value="0"/>
+      <device-addr value="0xa6"/>
+      <offset value="0"/>
+      <offset-width value="2"/>
+      <block-size value="32"/>
+      <number-bytes value="256"/>
+      <binary-file value="/tmp/vpd.txt"/>
+      <end-mark keyword="cmd"/>
+      <error-filter type="key-word" operation="find" value="Invalid"/>
+      <error-filter type="key-word" operation="find" value="error"/>
+      <error-filter type="key-word" operation="find" value="Unknown"/>
+    </lsi-vpd-check>
+  </resource>
+
+
+  <!--loop-process loop="1" quit="fail">
+    <item type="lsi-vpd-read">
+      <desc>VPD Read</desc>
+      <lsi-vpd-read ref="lsi-vpd-read-file"/>
+    </item>
+  </loop-process-->
+
+  <loop-process loop="100" quit="fail">
+    <item type="lsi-vpd-write">
+      <desc>VPD Write</desc>
+      <lsi-vpd-write ref="lsi-vpd-write-zero"/>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT20S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="iicw 0a 4 0x30 0x80"/>
+      </ses-command>
+    </item>
+    <item type="lsi-vpd-check">
+      <desc>VPD Check</desc>
+      <lsi-vpd-check ref="lsi-vpd-check-zero"/>
+    </item>
+	<item type="lsi-vpd-write">
+      <desc>VPD Write</desc>
+      <lsi-vpd-write ref="lsi-vpd-write-file"/>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT20S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="iicw 0a 4 0x30 0x80"/>
+      </ses-command>
+    </item>
+    <item type="lsi-vpd-check">
+      <desc>VPD Check</desc>
+      <lsi-vpd-check ref="lsi-vpd-check-file"/>
+    </item>
+
+  </loop-process>
+</testcase>
+

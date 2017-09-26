@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:cls="http://www.celestica.com">
+
+<!--Definition of Reporter -->
+<xs:complexType name="Log">
+    <xs:sequence>
+        <xs:element name="directory" type="xs:string"/>
+        <xs:element name="file" type="xs:string"/>
+        <xs:element name="trace" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Status">
+    <xs:sequence>
+        <xs:element name="directory" type="xs:string"/>
+        <xs:element name="file" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Reporter">
+    <xs:sequence>
+        <xs:element name="log" type="Log"/>
+        <xs:element name="status" type="Status"/>
+    </xs:sequence>
+</xs:complexType>
+
+<!--Definition of Resource -->
+<xs:complexType name="Uart">
+    <xs:sequence>
+        <xs:element name="port" type="xs:string"/>
+        <xs:element name="baudrate">
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:enumeration value="115200"/>
+                    <xs:enumeration value="38400"/>
+                    <xs:enumeration value="19200"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+        <xs:element name="timeout">
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="PhyStatus">
+    <xs:sequence>
+        <xs:element name="attribute" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="status">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="on"/>
+                                <xs:enumeration value="off"/>
+                                <xs:enumeration value="event-happened"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="PhyList">
+    <xs:sequence>
+        <!--xs:element name="id" type="xs:integer"/-->
+        <xs:element name="id" maxOccurs="unbounded">
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="31"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PhyRange">
+    <xs:sequence>
+        <xs:element name="start">
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="31"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+        <xs:element name="end">
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="31"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PhyTable">
+    <xs:sequence>
+        <xs:element name="phy" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:all>
+                    <xs:element name="phy-list" type="PhyList"/>
+                    <xs:element name="phy-range" type="PhyRange"/>
+                    <xs:element name="phy-status" type="PhyStatus"/>
+                </xs:all>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="EsesExec">
+    <xs:sequence>
+        <xs:element name="path" type="xs:string"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Firmwares">
+    <xs:sequence>
+        <xs:element name="firmware" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:all>
+                    <xs:element name="version" type="xs:string"/>
+                    <xs:element name="type" type="xs:string"/>
+                    <xs:element name="path" type="xs:string"/>
+                </xs:all>
+                <xs:attribute name="name" type="xs:string"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Resource">
+    <xs:sequence>
+        <xs:element name="uart" type="Uart"/>
+        <xs:element name="phy-table" type="PhyTable" maxOccurs="unbounded"/>
+        <xs:element name="eses-exec" type="EsesExec"/>
+        <xs:element name="firmwares" type="Firmwares"/>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- Definition of Process and Test Items -->
+<xs:complexType name="FirmwareDownload">
+    <xs:sequence>
+        <xs:element name="firmware">
+            <xs:complexType>
+                <xs:attribute name="ref" type="xs:string"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="FirmwareToggle"/>
+
+<xs:complexType name="FirmwareCheckVersion">
+    <xs:all>
+        <xs:element name="sxp_fw" type="xs:string"/>
+        <xs:element name="boot" type="xs:string"/>
+        <xs:element name="istr" type="xs:string"/>
+        <xs:element name="fpga" type="xs:string"/>
+    </xs:all>
+</xs:complexType>
+
+<xs:complexType name="PhyCheckStatus">
+    <xs:sequence>
+        <xs:element name="phy-table">
+            <xs:complexType>
+                <xs:attribute name="ref" type="xs:string"/>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Process">
+    <xs:sequence>
+        <xs:element name="item" maxOccurs="unbounded">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="desc" type="xs:string"/>
+                    <xs:element name="block" type="xs:duration" minOccurs="0" maxOccurs="1"/>
+                    <xs:choice>
+                        <xs:element name="firmware-download" type="FirmwareDownload"/>
+                        <xs:element name="firmware-check-version" type="FirmwareCheckVersion"/>
+                        <xs:element name="phy-check-status" type="PhyCheckStatus"/>
+                        <xs:element name="firmware-toggle" type="FirmwareToggle"/>
+                    </xs:choice>
+                </xs:sequence>
+                <xs:attribute name="type">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="firmware-download"/>
+                            <xs:enumeration value="firmware-check-version"/>
+                            <xs:enumeration value="firmware-toggle"/>
+                            <xs:enumeration value="phy-check-status"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:complexType>
+        </xs:element>
+    </xs:sequence>
+    <xs:attribute name="loop" type="xs:positiveInteger"/>
+    <xs:attribute name="quit">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="fail"/>
+                <xs:enumeration value="never"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:attribute>
+</xs:complexType>
+
+<!-- Definition of testcase -->
+<xs:element name="testcase">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="reporter" type="Reporter"/>
+            <xs:element name="resource" type="Resource"/>
+            <xs:element name="process" type="Process"/>
+        </xs:sequence>
+        <xs:attribute name="schema" type="xs:string"/>
+    </xs:complexType>
+</xs:element>
+
+</xs:schema>

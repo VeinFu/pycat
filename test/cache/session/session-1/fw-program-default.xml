@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase schema="Tabasco/fw-program.xsd">
+    <reporter>
+        <log name="log-1">
+            <directory>/home/user</directory>
+            <file>test_log.txt</file>
+            <trace>debug</trace>
+        </log>
+        <status name="status-1">
+            <directory>/home/user</directory>
+            <file>test_log.txt</file>
+        </status>
+    </reporter>
+    <resource>
+        <uart name="SES-1">
+            <port>com1</port>
+            <baudrate>115200</baudrate>
+            <timeout>0.5</timeout>
+        </uart>
+        <phy-table name="phy-table-1">
+            <phy>
+                <phy-list>
+                    <id>0</id>
+                    <id>1</id>
+                </phy-list>
+                <phy-range>
+                    <start>4</start>
+                    <end>12</end>
+                </phy-range>
+                <phy-status>
+                    <attribute><name>SAS Attached</name><status>on</status></attribute>
+                    <attribute><name>SATA Attached</name><status>off</status></attribute>
+                    <attribute><name>Device Present</name><status>on</status></attribute>
+                    <attribute><name>PhyRst At Max</name><status>off</status></attribute>
+                    <attribute><name>Rate=1.5G</name><status>on</status></attribute>
+                    <attribute><name>Rate=3G</name><status>off</status></attribute>
+                    <attribute><name>Rate=6G</name><status>off</status></attribute>
+                    <attribute><name>Rate=12G</name><status>off</status></attribute>
+                    <attribute><name>SAS2 Enabled</name><status>on</status></attribute>
+                    <attribute><name>Phy Ready</name><status>on</status></attribute>
+                </phy-status>
+            </phy>
+            <phy>
+                <phy-range>
+                    <start>16</start>
+                    <end>31</end>
+                </phy-range>
+                <phy-list>
+                    <id>13</id>
+                    <id>15</id>
+                </phy-list>
+                <phy-status>
+                    <attribute><name>I-Phy Ready</name><status>off</status></attribute>
+                    <attribute><name>I-Spinup Hold Conf</name><status>off</status></attribute>
+                    <attribute><name>I-Disparity Error</name><status>event-happened</status></attribute>
+                    <attribute><name>I-Code Viol Err</name><status>event-happened</status></attribute>
+                    <attribute><name>I-PhyReset Failed*</name><status>off</status></attribute>
+                    <attribute><name>Primitive error*</name><status>event-happened</status></attribute>
+                </phy-status>
+            </phy>
+        </phy-table>
+        <eses-exec>
+            <path>C:\\program_flash\\CDES_0.6.0\\test_eses-8.16\\test_eses.exe</path>
+        </eses-exec>
+        <firmwares>
+            <firmware name="fw-0.5.0-boot">
+                <version>0.5.0</version>
+                <type>Boot_mips</type>
+                <path>C:\\program_flash\\CDES_0.5.0\\cdes2-firmware-0.5.0\\Boot_mips.bin</path>
+            </firmware>
+            <firmware name="fw-0.5.0-cdef">
+                <version>0.5.0</version>
+                <type>cdef</type>
+                <path>C:\\program_flash\\CDES_0.5.0\\cdes2-firmware-0.5.0\\cdef.bin</path>
+            </firmware>
+            <firmware name="fw-0.5.0-rom">
+                <version>0.5.0</version>
+                <type>rom</type>
+                <path>C:\\program_flash\\CDES_0.5.0\\cdes2-firmware-0.5.0\\cdes_rom.bin</path>
+            </firmware>
+            <firmware name="fw-0.5.0-istr">
+                 <version>0.5.0</version>
+                 <type>istr</type>
+                 <path>C:\\program_flash\\CDES_0.5.0\\cdes2-firmware-0.5.0\\istr.bin</path>
+            </firmware>
+            <firmware name="fw-0.6.0-boot">
+                <version>0.6.0</version>
+                <type>Boot_mips</type>
+                <path>C:\\program_flash\\CDES_0.6.0\\cdes2-firmware-0.6.0\\Boot_mips.bin</path>
+            </firmware>
+            <firmware name="fw-0.6.0-cdef">
+                <version>0.6.0</version>
+                <type>cdef</type>
+                <path>C:\\program_flash\\CDES_0.6.0\\cdes2-firmware-0.6.0\\cdef.bin</path>
+            </firmware>
+            <firmware name="fw-0.6.0-rom">
+                <version>0.6.0</version>
+                <type>rom</type>
+                <path>C:\\program_flash\\CDES_0.6.0\\cdes2-firmware-0.6.0\\cdes_rom.bin</path>
+            </firmware>
+            <firmware name="fw-0.6.0-istr">
+                 <version>0.6.0</version>
+                 <type>istr</type>
+                 <path>C:\\program_flash\\CDES_0.6.0\\cdes2-firmware-0.6.0\\istr.bin</path>
+            </firmware>
+        </firmwares>
+    </resource>
+    <process loop="2" quit="fail">
+        <item type="firmware-download">
+            <desc>Download IOSXP Boot</desc>
+            <firmware-download>
+                <firmware ref="fw-0.5.0-boot"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP CDEF</desc>
+            <firmware-download>
+                <firmware ref="fw-0.5.0-cdef"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP CDES</desc>
+            <firmware-download>
+                <firmware ref="fw-0.5.0-rom"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP InitStr</desc>
+            <firmware-download>
+                <firmware ref="fw-0.5.0-istr"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-toggle">
+            <desc>Toggle Firmware to CDES-0.5.0</desc>
+            <firmware-toggle/>
+        </item>
+        <item type="firmware-check-version">
+            <desc>Check Firmware Version</desc>
+            <firmware-check-version>
+                <sxp_fw>0.5.0</sxp_fw>
+                <boot>0.3.0</boot>
+                <istr>0.3.0</istr>
+                <fpga>00.12-flash-3</fpga>
+            </firmware-check-version>
+        </item>
+        <item type="phy-check-status">
+            <desc>Check Phy Status</desc>
+            <phy-check-status>
+                <phy-table ref="phy-table-1"/>
+            </phy-check-status>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP Boot</desc>
+            <firmware-download>
+                <firmware ref="fw-0.6.0-boot"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP CDEF</desc>
+            <firmware-download>
+                <firmware ref="fw-0.6.0-cdef"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP CDES</desc>
+            <firmware-download>
+                <firmware ref="fw-0.6.0-rom"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-download">
+            <desc>Download IOSXP InitStr</desc>
+            <firmware-download>
+                <firmware ref="fw-0.6.0-istr"/>
+            </firmware-download>
+        </item>
+        <item type="firmware-toggle">
+            <desc>Toggle Firmware to CDES-0.6.0</desc>
+            <firmware-toggle/>
+        </item>
+        <item type="firmware-check-version">
+            <desc>Check Firmware Version</desc>
+            <firmware-check-version>
+                <sxp_fw>0.6.0</sxp_fw>
+                <boot>0.3.0</boot>
+                <istr>0.3.0</istr>
+                <fpga>00.13</fpga>
+            </firmware-check-version>
+        </item>
+        <item type="phy-check-status">
+            <desc>Check Phy Status</desc>
+            <phy-check-status>
+                <phy-table ref="phy-table-1"/>
+            </phy-check-status>
+        </item>
+    </process>
+</testcase>

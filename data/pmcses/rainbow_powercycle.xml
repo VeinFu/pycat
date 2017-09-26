@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testcase plugin="pmcses" type="pmcses" schema="pmcses.xsd">
+  <loop-process loop="1" quit="">:
+    <!--item type="ses-command">
+      <desc>OUTP OFF</desc>
+      <block>PT1M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp off"/>
+      </ses-command>
+    </item-->
+    <!--item type="ses-command">
+      <desc>OUTP ON</desc>
+      <block>PT1M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp on"/>
+      </ses-command>
+    </item-->
+    <item type="ses-command-comparefirstvalue">
+      <desc>PHY CHECK</desc>
+      <ses-command-comparefirstvalue proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="3"/>
+        <cmd value="status sas_phy" timeout="3" recv="8192"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <!--error-filter type="key-word" operation="find" value="error"/-->
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-comparefirstvalue>
+    </item>
+    <!--item type="ses-command">
+      <desc>DGB SET</desc>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="dbg set 1"/>
+      </ses-command>
+    </item-->
+    <!--item type="ses-command-chkhddtemp">
+      <desc>CHECK HDD TEMP</desc>
+      <ses-command-chkhddtemp proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="1.5"/>
+        <cmd value="temp get" timeout="2" recv="8192"/>
+        <temp tempmax="65" tempmin="0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-chkhddtemp>
+    </item-->
+    <item type="ses-command-chkhddrate">
+      <desc>CHECK HDD RATE</desc>
+      <ses-command-chkhddrate proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="4"/>
+        <cmd value="port get" timeout="3" recv="8192"/>
+        <rate rate="6G0,6G0,12G0,6G0,6G0,6G0,6G0,6G0,6G0,12G0,12G0,6G0,12G0,6G0,6G0,12G0,12G0,6G0,12G0,6G0,6G0,6G0,6G0,6G0,12G0,6G0,6G0,6G0,6G0,12G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,12G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,6G0,12G0,6G0,6G0,12G0"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-chkhddrate>
+    </item>
+    <item type="ses-command-chkfruget">
+      <desc>CHECK FRUGET INFO</desc>
+      <ses-command-chkfruget proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="1.5"/>
+        <cmd value="fru get" timeout="1" recv="8192"/>
+        <fruget canafw="2.3.4" canacpld="0.0.0.3" canbfw="2.3.4" canbcpld="0.0.0.3" psasn="CCGT1431001086" psapn="TDPS-1650ABA" psafw="0117" psbsn="CCGT1430000904" psbpn="TDPS-1650ABA" psbfw="0117"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-chkfruget>
+    </item>
+    <item type="ses-command-chkfanspd">
+      <desc>CHECK FAN SPEED</desc>
+      <ses-command-chkfanspd proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="fan get" timeout="1" recv="8192"/>
+        <fanspd psfanmax="6000" psfanmin="5500"/>
+        <end-mark name="normal-mode" keyword="cmd"/>
+        <error-filter type="key-word" operation="find" value="Invalid"/>
+        <error-filter type="key-word" operation="find" value="error"/>
+        <error-filter type="key-word" operation="find" value="Unknown"/>
+      </ses-command-chkfanspd>
+    </item>
+    <item type="ses-command">
+      <desc>RESET</desc>
+      <block>PT10S</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="115200" timeout="0.1"/>
+        <cmd value="reset 1"/>
+      </ses-command>
+    </item>
+    <!--item type="ses-command">
+      <desc>OUTP OFF</desc>
+      <block>PT3M</block>
+      <ses-command proxy="uart">
+        <uart port="/dev/ttyUSB0" baudrate="38400" timeout="0.1" end-of-line="CR"/>
+        <cmd value="outp off"/>
+      </ses-command>
+    </item-->
+
+  </loop-process>
+</testcase>
